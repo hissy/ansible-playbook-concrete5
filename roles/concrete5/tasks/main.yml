@@ -1,0 +1,14 @@
+---
+# todo: check concrete5 is already installed
+
+- name: composer create project
+  composer:
+    command: create-project
+    arguments: "-n {{ composer_project | default('concrete5/composer') }} {{ project_root }}"
+    working_dir: "{{ project_root }}"
+    prefer_dist: yes
+
+- name: install concrete5
+  command: "./vendor/bin/concrete5 c5:install --db-server {{ db_server }} --db-username {{ db_username }} --db-password {{ db_password }} --db-database {{ db_database }} --starting-point {{ starting_point }} --admin-email {{ admin_email }} --admin-password {{ admin_password }} --demo-username {{ demo_username }} --demo-password {{ demo_password }} --demo-email {{ demo_email }} --language {{ site_language }} --site-locale {{ site_locale }}"
+  args:
+    chdir: "{{ project_root }}"

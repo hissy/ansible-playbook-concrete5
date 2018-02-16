@@ -1,0 +1,24 @@
+---
+- name: clean project root
+  file:
+    state: absent
+    path: "{{ project_root }}/"
+  notify: restart php-fpm
+
+- name: create project root
+  file:
+    path: "{{ project_root }}"
+    state: directory
+    mode: 0755
+    owner: nginx
+    group: nginx
+  notify: restart php-fpm
+
+- name: create a session save path for php
+  file:
+    path: "{{ session_save_path }}"
+    state: directory
+    mode: 0770
+    owner: nginx
+    group: nginx
+  notify: restart php-fpm

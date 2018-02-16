@@ -1,0 +1,7 @@
+---
+- name: Terminate ec2 instances
+  ec2:
+    instance_tags:
+      Name: "{{ tag }}"
+    region: "{{ region }}"
+    state: absent

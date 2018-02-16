@@ -1,0 +1,36 @@
+---
+- name: Add official MariaDB repository
+  yum_repository:
+    name: MariaDB
+    description: Official MariaDB repository
+#    baseurl: "http://yum.mariadb.org/{{ mariadb_version }}/{{ ansible_distribution|lower|regex_replace('redhat', 'rhel') }}{{ ansible_distribution_major_version }}-amd64"
+    baseurl: http://yum.mariadb.org/10.2/centos6-amd64
+    gpgkey: https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+    gpgcheck: yes
+
+#- name: update all packages
+#  yum:
+#    name: '*'
+#    state: latest
+#  register: yum_update
+#  when: yum_update is not defined
+
+- name: install mariadb
+  yum:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - MariaDB-server
+    - MySQL-python27
+    - MySQL-devel
+    - python-devel
+    - gcc
+
+- name: Enable and start mariadb-server
+  service:
+    name: mysql
+    state: started
+    enabled: yes
+
+- name: Install python mysqlmodule
+  pip: name=MySQL-python

@@ -1,0 +1,16 @@
+---
+- include: packages.yml
+
+- name: find php.ini
+  stat: path=/etc/php.ini
+  register: php_ini
+
+- include: php_ini.yml
+  when: php_ini.stat.exists
+
+- name: find php-fpm.conf
+  stat: path=/etc/php-fpm.conf
+  register: phpfpm_conf
+
+- include: php-fpm_conf.yml
+  when: phpfpm_conf.stat.exists

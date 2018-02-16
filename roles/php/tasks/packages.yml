@@ -1,0 +1,24 @@
+---
+#- name: update all packages
+#  yum:
+#    name: '*'
+#    state: latest
+#  register: yum_update
+#  when: yum_update is not defined
+
+- name: install php
+  yum:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - php71
+    - php71-cli
+    - php71-common
+    - php71-curl
+    - php71-devel
+    - php71-fpm
+    - php71-gd
+    - php71-mbstring
+    - php71-mysqlnd
+    - php71-pdo
+    - php71-xml

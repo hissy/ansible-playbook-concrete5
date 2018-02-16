@@ -1,0 +1,44 @@
+---
+# ec2 connection
+key_name: my_key
+security_group: my_group
+instance_type: t2.micro
+vpc_subnet_id: subnet-abcd1234
+image: ami-ceafcba8 # Amazon Linux AMI 2017.09.1.20180115 x86_64 HVM
+region: ap-northeast-1
+tag: concrete5
+
+# common settings
+ansible_ssh_private_key_file: "~/.ssh/{{ key_name }}.pem"
+timezone: "Asia/Tokyo"
+
+# directories
+project_root: "/var/www/html"
+document_root: "{{ project_root }}/public"
+
+# concrete5
+db_server: "127.0.0.1"
+db_username: "c5db_user"
+db_database: "c5db"
+db_password: "{{ lookup('password', 'credentials/db_password') }}"
+starting_point: "elemental_full"
+admin_email: "admin@example.com"
+admin_password: "{{ lookup('password', 'credentials/admin_password') }}"
+demo_username: "demo"
+demo_email: "demo@example.com"
+demo_password: "{{ lookup('password', 'credentials/demo_password') }}"
+site_language: "ja_JP"
+site_locale: "ja_JP"
+
+# mariadb
+mariadb_databases:
+  - name: "{{ db_database }}"
+mariadb_root_password: "{{ lookup('password', 'credentials/db_root_password') }}"
+mariadb_users:
+  - name: "{{ db_username }}"
+    password: "{{ db_password }}"
+    priv: "*.*:ALL"
+mysql_default_time_zone: "{{ timezone }}"
+
+# php
+session_save_path: "/var/lib/php/nginx-session"

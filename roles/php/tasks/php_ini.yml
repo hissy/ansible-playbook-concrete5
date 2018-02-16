@@ -1,0 +1,16 @@
+---
+- name: set php timezone as jst
+  lineinfile: >
+    dest=/etc/php.ini
+    regexp="^;?date\.timezone ="
+    line="date.timezone = {{ timezone }}"
+    state=present
+  notify: restart php-fpm
+
+- name: disable expose php
+  lineinfile: >
+    dest=/etc/php.ini
+    regexp="^;?expose_php ="
+    line="expose_php = Off"
+    state=present
+  notify: restart php-fpm

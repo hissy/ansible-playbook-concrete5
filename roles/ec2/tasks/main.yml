@@ -1,0 +1,33 @@
+---
+- name: Enforce EC2 instance is running
+  ec2:
+    key_name: "{{ key_name }}"
+    group: "{{ security_group }}"
+    instance_type: "{{ instance_type }}"
+    image: "{{ image }}"
+    region: "{{ region }}"
+    vpc_subnet_id: "{{ vpc_subnet_id }}"
+    wait: true
+#    state: running
+    assign_public_ip: yes
+    exact_count: 1
+    count_tag:
+      Name: "{{ tag }}"
+    instance_tags:
+      Name: "{{ tag }}"
+  register: ec2
+
+- name: Wait for SSH to come up
+  wait_for:
+    host: "{{ item.public_dns_name }}"
+    port: 22
+    delay: 60
+    timeout: 320
+    state: started
+  with_items: "{{ ec2.instances }}"
+
+- name: Add started instances to host group
+  add_host:
+    hostname: "{{ item.public_ip }}"
+    groupname: launched
+  with_items: "{{ ec2.instances }}"

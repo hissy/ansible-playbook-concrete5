@@ -1,0 +1,5 @@
+---
+- user:
+    name: ec2-user
+    groups: nginx
+    append: yes

@@ -1,0 +1,7 @@
+---
+# from galaxy
+- src: jdauphant.nginx
+#- src: mkubenka.mysql
+- src: geerlingguy.git
+- src: geerlingguy.composer
+#- src: bertvv.mariadb

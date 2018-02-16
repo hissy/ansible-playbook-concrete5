@@ -1,0 +1,56 @@
+---
+- name: set permissions on socket - owner
+  lineinfile: >
+    dest=/etc/php-fpm.d/www.conf
+    regexp='^;?listen\.owner'
+    line='listen.owner = nginx'
+    state=present
+  notify: restart php-fpm
+
+- name: set permissions on socket - group
+  lineinfile: >
+    dest=/etc/php-fpm.d/www.conf
+    regexp='^;?listen\.group'
+    line='listen.group = nginx'
+    state=present
+  notify: restart php-fpm
+
+- name: set permissions on socket - mode
+  lineinfile: >
+    dest=/etc/php-fpm.d/www.conf
+    regexp='^;?listen\.mode'
+    line='listen.mode = 0664'
+    state=present
+  notify: restart php-fpm
+
+- name: set listen acl users
+  lineinfile: >
+    dest=/etc/php-fpm.d/www.conf
+    state=present
+    regexp='^;?listen\.acl_users'
+    line='listen.acl_users = nginx'
+  notify: restart php-fpm
+
+- name: set user
+  lineinfile: >
+    dest=/etc/php-fpm.d/www.conf
+    regexp='^;?user = '
+    line='user = nginx'
+    state=present
+  notify: restart php-fpm
+
+- name: set group
+  lineinfile: >
+    dest=/etc/php-fpm.d/www.conf
+    regexp='^;?group = '
+    line='group = nginx'
+    state=present
+  notify: restart php-fpm
+
+- name: set session save path
+  lineinfile: >
+    dest=/etc/php-fpm.d/www.conf
+    regexp='^;?php_value\[session\.save_path\]'
+    line='php_value[session.save_path] = {{ session_save_path }}'
+    state=present
+  notify: restart php-fpm

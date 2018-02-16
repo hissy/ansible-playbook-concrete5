@@ -1,0 +1,6 @@
+---
+- include: packages.yml
+- include: root-password.yml
+- include: timezones.yml
+- include: databases.yml
+- include: users.yml
