@@ -22,3 +22,24 @@
     - php71-mysqlnd
     - php71-pdo
     - php71-xml
+    - php71-opcache
+    - php71-pecl-memcache
+    - memcached
+
+- name: Enable and start services
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  with_items:
+    - memcached
+
+- name: install image libraries
+  yum:
+    name: "{{ item }}"
+    state: installed
+    enablerepo: epel
+  with_items:
+    - jpegoptim
+    - optipng
+    - gifsicle

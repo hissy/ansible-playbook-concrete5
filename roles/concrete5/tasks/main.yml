@@ -4,7 +4,7 @@
 - name: composer create project
   composer:
     command: create-project
-    arguments: "-n {{ composer_project | default('concrete5/composer') }} {{ project_root }}"
+    arguments: "{{ composer_project_options }} {{ composer_project | default('concrete5/composer') }} {{ project_root }} {{ composer_project_version }}"
     working_dir: "{{ project_root }}"
     prefer_dist: yes
 

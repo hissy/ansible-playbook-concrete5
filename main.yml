@@ -21,7 +21,7 @@
     - role: jdauphant.nginx
       nginx_http_params:
         - gzip on
-        - gzip_types text/plain text/xml text/css application/xml application/javascript
+        - gzip_types text/plain text/xml text/css application/xml application/x-javascript application/javascript application/vnd.ms-fontobject application/font-sfnt application/x-font-ttf
         - gzip_proxied any
         - gzip_vary on
       nginx_sites:
@@ -29,12 +29,15 @@
             - listen 80
             - root {{ document_root }}
             - index index.php index.html index.htm
+            - client_max_body_size 20M
             - recursive_error_pages off
             - port_in_redirect off
             - |
               location / {
+                  sendfile on;
+                  sendfile_max_chunk 1m;
                   if (-f $request_filename) {
-                      expires 1d;
+                      expires 1y;
                       break;
                   }
                   if ($uri ~ "^(.+?\.php?)(/.*)$") {
@@ -63,7 +66,7 @@
     - role: geerlingguy.git
     - role: geerlingguy.composer
     - role: mariadb # todo: make PR to bertvv.mariadb to support amazon linux
-    - role: permissions
+   - role: permissions
 
 - name: Setup a concrete5
   hosts: launched
@@ -73,4 +76,4 @@
   become_user: nginx
 
   roles:
-    - role: concrete5 # todo: separate to our galaxy role
+   - role: concrete5 # todo: separate to our galaxy role

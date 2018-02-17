@@ -8,7 +8,6 @@
     region: "{{ region }}"
     vpc_subnet_id: "{{ vpc_subnet_id }}"
     wait: true
-#    state: running
     assign_public_ip: yes
     exact_count: 1
     count_tag:
@@ -26,8 +25,15 @@
     state: started
   with_items: "{{ ec2.instances }}"
 
+- name: Gather EC2 facts
+  ec2_instance_facts:
+    region: "{{ region }}"
+    filters:
+      "tag:Name": "{{ tag }}"
+  register: ec2_facts
+
 - name: Add started instances to host group
   add_host:
-    hostname: "{{ item.public_ip }}"
+    hostname: "{{ item.public_dns_name }}"
     groupname: launched
-  with_items: "{{ ec2.instances }}"
+  with_items: "{{ ec2_facts.instances }}"

@@ -8,6 +8,10 @@
 * Install and setup mariadb
 * Install concrete5
 
+## Requirements
+
+* boto3
+
 ## Install requirements
 
 ```bash

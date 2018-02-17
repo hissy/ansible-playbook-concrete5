@@ -54,3 +54,11 @@
     line='php_value[session.save_path] = {{ session_save_path }}'
     state=present
   notify: restart php-fpm
+
+- name: process
+  lineinfile: >
+    dest=/etc/php-fpm.d/www.conf
+    regexp='^;?pm'
+    line='pm = dynamic'
+    state=present
+  notify: restart php-fpm
